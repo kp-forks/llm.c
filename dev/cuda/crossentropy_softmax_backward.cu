@@ -2,7 +2,7 @@
 Kernels for crossentropy forward pass.
 
 Compile example:
-nvcc -O3 --use_fast_math crossentropy_softmax_backward.cu -o crossentropy_softmax_backward
+nvcc -O3 --use_fast_math -lcublas -lcublasLt crossentropy_softmax_backward.cu -o crossentropy_softmax_backward
 
 version 1 is a straight-forward port from CPU code to kernel, parallel over B,T
 ./crossentropy_softmax_backward 1
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
     cudaCheck(cudaSetDevice(deviceIdx));
 
     // create host memory of random numbers
-    float* probs = make_random_float(B * T * V);
+    float* probs = make_random_float_01(B * T * V);
     int* targets = make_random_int(B * T, V);
     float* dlosses = make_random_float(B * T);
     float* dlogits = make_zeros_float(B * T * V);
